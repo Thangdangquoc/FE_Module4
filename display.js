@@ -1,6 +1,6 @@
 let table = document.getElementById("listFood");
 let seachName = document.getElementById("search_name");
-let seachCategory = document.getElementById("category3");
+let seachCategory = document.getElementById("category4");
 getAllFood();
 listCategory1();
 
@@ -113,9 +113,9 @@ function listCategory1(){
         success: function (listCategory){
             result = ""
             for (let i = 0; i < listCategory.length; i++) {
-                result+="<li class=\"nav-item me-2\">\n" +
-                    "                        <a class=\"btn btn-outline-primary border-2 active\" data-bs-toggle=\"pill\"\n" +
-                    "                           href=\"#tab-1\" value="+listCategory[i].id +">"+ listCategory[i].name +"</a>\n" +
+                result+="<li class=\"nav-item me-2\"  >\n" +
+                    "                        <p onclick='searchCate("+listCategory[i].id +")' class=\"btn btn-outline-primary border-2 active\" data-bs-toggle=\"pill\"\n" +
+                    "                             >"+ listCategory[i].name +"</p>\n" +
                     "                    </li>"
             }
             document.getElementById("category3").innerHTML = result;
@@ -237,6 +237,16 @@ function searchCategory(){
     $.ajax({
         type:"GET",
         url:"http://localhost:8080/api/food/search-category?name="+ seachCategory.value,
+        success :function (data) {
+            console.log(data.totalPages)
+            console.log(data)
+            displayTable(data.content)
+
+        }})}
+function searchCate(a){
+    $.ajax({
+        type:"GET",
+        url:"http://localhost:8080/api/food/search_category?id="+ a,
         success :function (data) {
             console.log(data.totalPages)
             console.log(data)
