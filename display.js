@@ -382,11 +382,12 @@ function getItemByCustomerId(idUser) {
 
 function displayItem(items) {
     let content = "";
+    let content1 = "";
     for (let i = 0; i < items.length; i++) {
         content += " <div class=\"cart-row\">\n" +
             "                                    <div class=\"cart-item cart-column\">\n" +
             "                                                                        <img class=\"cart-item-image\" src=\"https://bizweb.dktcdn.net/thumb/large/100/228/168/products/sualai.jpg?v=1573720306000\" width=\"100\" height=\"100\">\n"+
-            "                                                                        <img class=\"cart-item-image\" src=\"'+\"http://localhost:8080/Image/" + iteams[i].product.imageUrl  +'\" width=\"100\" height=\"100\">\n"+
+            // "                                                                        <img class=\"cart-item-image\" src=\"'+\"http://localhost:8080/Image/" + iteams[i].product.imageUrl  +'\" width=\"100\" height=\"100\">\n"+
             // "                                        <img class=\"cart-item-image"  src="'+"http://localhost:8080/Image/"+iteams[i].product.imageUrl+'" width="100" height="100">\n" +
         //     "             <th>"+ '<img cart-item-image"  src="'+"http://localhost:8080/Image/" + iteams[i].product.imageUrl  +'"  width="100" height="100\">' + "</th>"+
         // " <th>"+ '<img class="img-fluid w-100"  src="'+"http://localhost:8080/Image/" + data[i].imageUrl  +'"  width="400" height="400">' + "</th>"+
@@ -410,10 +411,11 @@ function displayItem(items) {
     // localStorage.setItem("count-item", countItem)
     // let discount = 0;
     // let ship = 0;
-    content += "  <span class=\"cart-total-price\">"+subtotal+"</span>"
+    content1 += "  <span class=\"cart-total-price\">"+subtotal+"</span>"
     // document.getElementById('display-item-shop').innerHTML = content
     // document.getElementById('count-item').innerHTML = localStorage.getItem("count-item")
     document.getElementById('cart-total').innerHTML = content
+    document.getElementById('cart-total1').innerHTML = content1 +"VNĐ"
 }
 
 
