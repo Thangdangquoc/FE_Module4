@@ -1,7 +1,9 @@
 let table = document.getElementById("listFood");
+let table1 = document.getElementById("listFood1");
 let seachName = document.getElementById("search_name");
 let seachCategory = document.getElementById("category4");
 getAllFood();
+getAllFood1();
 listCategory1();
 
 function getAllFood(){
@@ -12,6 +14,18 @@ function getAllFood(){
             foods = data
             console.log(data)
             displayTable(data);
+        }
+    })
+}
+
+function getAllFood1(){
+    $.ajax({
+        type:"GET",
+        url:"http://localhost:8080/api/food",
+        success :function (data) {
+            foods = data
+            console.log(data)
+            displayTable1(data);
         }
     })
 }
@@ -46,6 +60,39 @@ function displayTable(data){
 
     }
     table.innerHTML = result;
+
+}
+function displayTable1(data){
+    let result = ""
+    for (let i = 0; i < data.length; i++) {
+        result +="<div class=\"col-xl-3 col-lg-4 col-md-6 wow fadeInUp\" data-wow-delay=\"0.3s\">\n" +
+            "                            <div class=\"product-item\">\n" +
+            "                                <div class=\"position-relative bg-light overflow-hidden\">\n" +
+            // "                                    <img  src="'+"http://localhost:8080/Image/" + data[i].imageUrl  +'"  width="100" height="100">\n" +
+            " <th>"+ '<img class="img-fluid w-100"  src="'+"http://localhost:8080/Image/" + data[i].imageUrl  +'"  width="400" height="400">' + "</th>"+
+            // "                                        <img class=\"cart-item-image\"  src="'+"http://localhost:8080/Image/" + iteams[i].imageUrl  +'" width=\"100\" height=\"100\">\n" +
+
+
+        "                                    <div class=\"bg-secondary rounded text-white position-absolute start-0 top-0 m-4 py-1 px-3\">New</div>\n" +
+            "                                </div>\n" +
+            "                                <div class=\"text-center p-4\">\n" +
+            "                                    <a class=\"d-block h5 mb-2\" href=\"\">"+data[i].name+"</a>\n" +
+            "                                    <span class=\"text-primary me-1\">"+ data[i].price +"VNĐ"+"</span>\n" +
+            "                                    <span class=\"text-body text-decoration-line-through\">100.000VNĐ</span>\n" +
+            "                                </div>\n" +
+            "                                <div class=\"d-flex border-top\">\n" +
+            "                                    <small class=\"w-50 text-center border-end py-2\">\n" +
+            "                                        <a class=\"text-body\" onclick='showEditForm("+data[i].id+")'><i class=\"fa fa-eye text-primary me-2\"></i>View detail</a>\n" +
+            "                                    </small>\n" +
+            "                                    <small class=\"w-50 text-center py-2\">\n" +
+            "                                        <a class=\"text-body\"></i>Add to cart</a>\n" +
+            "                                    </small>\n" +
+            "                                </div>\n" +
+            "                            </div>\n" +
+            "                        </div>\n"
+
+    }
+    table1.innerHTML = result;
 
 }
 function showCart(){
@@ -338,13 +385,18 @@ function displayItem(items) {
     for (let i = 0; i < items.length; i++) {
         content += " <div class=\"cart-row\">\n" +
             "                                    <div class=\"cart-item cart-column\">\n" +
-            // "                                        <img class=\"cart-item-image\"  src="'+"http://localhost:8080/Image/" + iteams[i].imageUrl  +'" width=\"100\" height=\"100\">\n" +
-            "                                        <span class=\"cart-item-title\">"+items[i].product.name+"</span>\n" +
+            "                                                                        <img class=\"cart-item-image\" src=\"https://bizweb.dktcdn.net/thumb/large/100/228/168/products/sualai.jpg?v=1573720306000\" width=\"100\" height=\"100\">\n"+
+            "                                                                        <img class=\"cart-item-image\" src=\"'+\"http://localhost:8080/Image/" + iteams[i].product.imageUrl  +'\" width=\"100\" height=\"100\">\n"+
+            // "                                        <img class=\"cart-item-image"  src="'+"http://localhost:8080/Image/"+iteams[i].product.imageUrl+'" width="100" height="100">\n" +
+        //     "             <th>"+ '<img cart-item-image"  src="'+"http://localhost:8080/Image/" + iteams[i].product.imageUrl  +'"  width="100" height="100\">' + "</th>"+
+        // " <th>"+ '<img class="img-fluid w-100"  src="'+"http://localhost:8080/Image/" + data[i].imageUrl  +'"  width="400" height="400">' + "</th>"+
+
+        "                                        <span class=\"cart-item-title\">"+items[i].product.name+"</span>\n" +
             "                                    </div>\n" +
             "                                    <span class=\"cart-price cart-column\">"+items[i].product.price+"</span>\n" +
             "                                    <div class=\"cart-quantity cart-column\">\n" +
             "                                        <input class=\"cart-quantity-input\" type=\"number\" value=\"1\">\n" +
-            "                                        <button class=\"btn btn-danger\" onclick='deleteItem("+items[i].id+")'>Xóa</button>\n" +
+            "                                        <button class=\"btn btn-danger\" onclick='deleteItem("+items[i].id+")'>Delete</button>\n" +
             "                                    </div>\n" +
             "                                </div>"
     }

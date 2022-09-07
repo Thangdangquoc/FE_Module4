@@ -274,3 +274,148 @@ function createCategory(){
     })
     event.preventDefault()
 }
+//Tìm kiếm theo category
+function searchCategory(){
+    $.ajax({
+        type:"GET",
+        url:"http://localhost:8080/api/food/search-category?name="+ seachCategory.value,
+        success :function (data) {
+            console.log(data.totalPages)
+            console.log(data)
+            displayTable(data.content)
+
+        }})}
+function searchCate(a){
+    $.ajax({
+        type:"GET",
+        url:"http://localhost:8080/api/food/search_category?id="+ a,
+        success :function (data) {
+            console.log(data.totalPages)
+            console.log(data)
+            displayTable(data.content)
+
+        }})}
+
+
+
+// Cart
+function createItem(idFood,idUser) {
+    console.log(idFood)
+    let quantity = 1;
+    let item = {
+        quantity : quantity,
+        cart:{
+            id: idUser
+        },
+        product:{
+            id: idFood
+        }
+    }
+    $.ajax({
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        type: "POST",
+        data: JSON.stringify(item),
+        //tên API
+        url: "http://localhost:8080/api/carts/item",
+        //xử lý khi thành công
+        success: function (data) {
+            alert("Thêm thành công ")
+            console.log(data)
+            getItemByCustomerId(idUser)
+        }
+    });
+    //chặn sự kiện mặc định của thẻ
+    // event.preventDefault();
+
+}
+
+let foods = [];
+// Create Cart
+function createCart(idUser) {
+    let cart ={
+        user:{
+            id: idUser
+        }
+    };
+    $.ajax({
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        type: "POST",
+        data: JSON.stringify(cart),
+        //tên API
+        url: "http://localhost:8080/api/carts",
+        //xử lý khi thành công
+        success: function () {
+        }
+    });
+    //chặn sự kiện mặc định của thẻ
+    event.preventDefault();
+}
+
+
+
+// TÌm kiếm Item theo ID người dùng
+getItemByCustomerId(1)
+function getItemByCustomerId(idUser) {
+    $.ajax({
+        type: "GET",
+        url: "http://localhost:8080/api/carts/item/" + 1,
+        success: function (data) {
+            displayItem(data)
+        }
+    })
+}
+
+
+function displayItem(items) {
+    let content = "";
+    for (let i = 0; i < items.length; i++) {
+        content += " <div class=\"cart-row\">\n" +
+            "                                    <div class=\"cart-item cart-column\">\n" +
+            // "                                        <img class=\"cart-item-image\"  src="'+"http://localhost:8080/Image/" + iteams[i].imageUrl  +'" width=\"100\" height=\"100\">\n" +
+            "             <th>"+ '<img class="img-fluid w-100"  src="'+"http://localhost:8080/Image/" + iteams[i].product.imageUrl  +'"  width="100" height="100\">' + "</th>"+
+            // " <th>"+ '<img class="img-fluid w-100"  src="'+"http://localhost:8080/Image/" + data[i].imageUrl  +'"  width="400" height="400">' + "</th>"+
+
+            "                                        <span class=\"cart-item-title\">"+items[i].product.name+"</span>\n" +
+            "                                    </div>\n" +
+            "                                    <span class=\"cart-price cart-column\">"+items[i].product.price+"</span>\n" +
+            "                                    <div class=\"cart-quantity cart-column\">\n" +
+            "                                        <input class=\"cart-quantity-input\" type=\"number\" value=\"1\">\n" +
+            "                                        <button class=\"btn btn-danger\" onclick='deleteItem("+items[i].id+")'>Xóa</button>\n" +
+            "                                    </div>\n" +
+            "                                </div>"
+    }
+    let subtotal = 0
+    let countItem = 0
+    for (let i = 0; i < items.length; i++) {
+        let totalItem = items[i].product.price* items[i].quantity;
+        subtotal += totalItem
+        countItem ++;
+    }
+    // localStorage.setItem("count-item", countItem)
+    // let discount = 0;
+    // let ship = 0;
+    content += "  <span class=\"cart-total-price\">"+subtotal+"</span>"
+    // document.getElementById('display-item-shop').innerHTML = content
+    // document.getElementById('count-item').innerHTML = localStorage.getItem("count-item")
+    document.getElementById('cart-total').innerHTML = content
+}
+
+
+function deleteItem(idItem) {
+
+    $.ajax({
+        type: "DELETE",
+        url: "http://localhost:8080/api/carts/item/" + idItem,
+        success: function () {
+            deleteComfirm(idItem)
+        }
+
+    })
+
+}
