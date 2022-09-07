@@ -369,7 +369,7 @@ function deleteItem(idItem) {
 
     $.ajax({
         type: "DELETE",
-        url: "http://localhost:8081/api/carts/item/" + idItem,
+        url: "http://localhost:8080/api/carts/item/" + idItem,
         success: function () {
             deleteComfirm(idItem)
         }
