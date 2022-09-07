@@ -348,27 +348,20 @@ function displayItem(items) {
             "                                    </div>\n" +
             "                                </div>"
     }
+    let subtotal = 0
+    let countItem = 0
     for (let i = 0; i < items.length; i++) {
         let totalItem = items[i].product.price* items[i].quantity;
-        subtotal += totalItem
+       subtotal += totalItem
         countItem ++;
     }
-    localStorage.setItem("count-item", countItem)
+    // localStorage.setItem("count-item", countItem)
     // let discount = 0;
     // let ship = 0;
-    content += "<div class=\"cart-footer\">\n" +
-        "         <ul class=\"price-content\">\n" +
-        "           <li>Thành tiền <span>"+ changePrice(subtotal) +"</span></li>\n" +
-        // "              <li>Phí Ship <span>"+ ship+"</span></li>\n" +
-        "          <li>Thanh toán <span>"+ changePrice(subtotal) +"</span></li>\n" +
-        "         </ul>\n" +
-        "            <div class=\"cart-actions text-center\">\n" +
-        "        <a class=\"cart-checkout\" href=\"cart.html\">Thanh toán</a>\n" +
-        "       </div>\n" +
-        "         </div>"
-    document.getElementById('display-item-shop').innerHTML = content
-    document.getElementById('count-item').innerHTML = localStorage.getItem("count-item")
-    document.getElementById('display-item').innerHTML = content
+    content += "  <span class=\"cart-total-price\">"+subtotal+"</span>"
+    // document.getElementById('display-item-shop').innerHTML = content
+    // document.getElementById('count-item').innerHTML = localStorage.getItem("count-item")
+    document.getElementById('cart-total').innerHTML = content
 }
 
 
