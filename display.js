@@ -9,6 +9,7 @@ function getAllFood(){
         type:"GET",
         url:"http://localhost:8080/api/food",
         success :function (data) {
+            foods = data
             console.log(data)
             displayTable(data);
         }
@@ -22,8 +23,10 @@ function displayTable(data){
             "                                <div class=\"position-relative bg-light overflow-hidden\">\n" +
             // "                                    <img  src="'+"http://localhost:8080/Image/" + data[i].imageUrl  +'"  width="100" height="100">\n" +
             " <th>"+ '<img class="img-fluid w-100"  src="'+"http://localhost:8080/Image/" + data[i].imageUrl  +'"  width="400" height="400">' + "</th>"+
+            // "                                        <img class=\"cart-item-image\"  src="'+"http://localhost:8080/Image/" + iteams[i].imageUrl  +'" width=\"100\" height=\"100\">\n" +
 
-            "                                    <div class=\"bg-secondary rounded text-white position-absolute start-0 top-0 m-4 py-1 px-3\">New</div>\n" +
+
+        "                                    <div class=\"bg-secondary rounded text-white position-absolute start-0 top-0 m-4 py-1 px-3\">New</div>\n" +
             "                                </div>\n" +
             "                                <div class=\"text-center p-4\">\n" +
             "                                    <a class=\"d-block h5 mb-2\" href=\"\">"+data[i].name+"</a>\n" +
@@ -35,7 +38,7 @@ function displayTable(data){
             "                                        <a class=\"text-body\" onclick='showEditForm("+data[i].id+")'><i class=\"fa fa-eye text-primary me-2\"></i>View detail</a>\n" +
             "                                    </small>\n" +
             "                                    <small class=\"w-50 text-center py-2\">\n" +
-            "                                        <a class=\"text-body\" href=\"\"><i class=\"fa fa-shopping-bag text-primary me-2\"></i>Add to cart</a>\n" +
+            "                                        <a class=\"text-body\" onclick='createItem("+ data[i].id  +",1)'></i>Add to cart</a>\n" +
             "                                    </small>\n" +
             "                                </div>\n" +
             "                            </div>\n" +
@@ -254,3 +257,130 @@ function searchCate(a){
 
         }})}
 
+
+
+// Cart
+function createItem(idFood,idUser) {
+    console.log(idFood)
+    let quantity = 1;
+    let item = {
+        quantity : quantity,
+        cart:{
+            id: idUser
+        },
+        product:{
+            id: idFood
+        }
+    }
+    $.ajax({
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        type: "POST",
+        data: JSON.stringify(item),
+        //tên API
+        url: "http://localhost:8080/api/carts/item",
+        //xử lý khi thành công
+        success: function (data) {
+            alert("Thêm thành công ")
+            console.log(data)
+            getItemByCustomerId(idUser)
+        }
+    });
+    //chặn sự kiện mặc định của thẻ
+    // event.preventDefault();
+
+}
+
+let foods = [];
+// Create Cart
+function createCart(idUser) {
+    let cart ={
+        user:{
+            id: idUser
+        }
+    };
+    $.ajax({
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        type: "POST",
+        data: JSON.stringify(cart),
+        //tên API
+        url: "http://localhost:8080/api/carts",
+        //xử lý khi thành công
+        success: function () {
+        }
+    });
+    //chặn sự kiện mặc định của thẻ
+    event.preventDefault();
+}
+
+
+
+// TÌm kiếm Item theo ID người dùng
+getItemByCustomerId(1)
+function getItemByCustomerId(idUser) {
+    $.ajax({
+        type: "GET",
+        url: "http://localhost:8080/api/carts/item/" + 1,
+        success: function (data) {
+            displayItem(data)
+        }
+    })
+}
+
+
+function displayItem(items) {
+    let content = "";
+    for (let i = 0; i < items.length; i++) {
+        content += " <div class=\"cart-row\">\n" +
+            "                                    <div class=\"cart-item cart-column\">\n" +
+            // "                                        <img class=\"cart-item-image\"  src="'+"http://localhost:8080/Image/" + iteams[i].imageUrl  +'" width=\"100\" height=\"100\">\n" +
+            "                                        <span class=\"cart-item-title\">"+items[i].product.name+"</span>\n" +
+            "                                    </div>\n" +
+            "                                    <span class=\"cart-price cart-column\">"+items[i].product.price+"</span>\n" +
+            "                                    <div class=\"cart-quantity cart-column\">\n" +
+            "                                        <input class=\"cart-quantity-input\" type=\"number\" value=\"1\">\n" +
+            "                                        <button class=\"btn btn-danger\" onclick='deleteItem("+items[i].id+")'>Xóa</button>\n" +
+            "                                    </div>\n" +
+            "                                </div>"
+    }
+    for (let i = 0; i < items.length; i++) {
+        let totalItem = items[i].product.price* items[i].quantity;
+        subtotal += totalItem
+        countItem ++;
+    }
+    localStorage.setItem("count-item", countItem)
+    // let discount = 0;
+    // let ship = 0;
+    content += "<div class=\"cart-footer\">\n" +
+        "         <ul class=\"price-content\">\n" +
+        "           <li>Thành tiền <span>"+ changePrice(subtotal) +"</span></li>\n" +
+        // "              <li>Phí Ship <span>"+ ship+"</span></li>\n" +
+        "          <li>Thanh toán <span>"+ changePrice(subtotal) +"</span></li>\n" +
+        "         </ul>\n" +
+        "            <div class=\"cart-actions text-center\">\n" +
+        "        <a class=\"cart-checkout\" href=\"cart.html\">Thanh toán</a>\n" +
+        "       </div>\n" +
+        "         </div>"
+    document.getElementById('display-item-shop').innerHTML = content
+    document.getElementById('count-item').innerHTML = localStorage.getItem("count-item")
+    document.getElementById('display-item').innerHTML = content
+}
+
+
+function deleteItem(idItem) {
+
+    $.ajax({
+        type: "DELETE",
+        url: "http://localhost:8081/api/carts/item/" + idItem,
+        success: function () {
+            deleteComfirm(idItem)
+        }
+
+    })
+
+}
