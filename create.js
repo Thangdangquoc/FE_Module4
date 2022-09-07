@@ -27,14 +27,14 @@ function displayTable(data){
             "                                <div class=\"text-center p-4\">\n" +
             "                                    <a class=\"d-block h5 mb-2\" href=\"\">"+data[i].name+"</a>\n" +
             "                                    <span class=\"text-primary me-1\">"+ data[i].price +"VNĐ"+"</span>\n" +
-            "                                    <span class=\"text-body text-decoration-line-through\">$29.00</span>\n" +
+            "                                    <span class=\"text-body text-decoration-line-through\">100.000VNĐ</span>\n" +
             "                                </div>\n" +
             "                                <div class=\"d-flex border-top\">\n" +
             "                                    <small class=\"w-50 text-center border-end py-2\">\n" +
-            "                                        <a class=\"text-body\" onclick='showEditForm("+data[i].id+")'><i class=\"fa fa-eye text-primary me-2\" ></i>Edit</a>\n" +
+            "                                        <a class=\"text-body\" onclick='showEditForm("+data[i].id+")'><i class='fas fa-edit' ></i>Edit</a>\n" +
             "                                    </small>\n" +
             "                                    <small class=\"w-50 text-center py-2\">\n" +
-            "                                        <a class=\"text-body\" onclick='deleteComfirm("+data[i].id+")'><i class=\"fa fa-shopping-bag text-primary me-2\" ></i>Delete</a>\n" +
+            "                                        <a class=\"text-body\" onclick='deleteComfirm("+data[i].id+")'><i class=\"bi bi-trash\" ></i>Delete</a>\n" +
             "                                    </small>\n" +
             "                                </div>\n" +
             "                            </div>\n" +
@@ -146,10 +146,10 @@ function listUser(){
 function deleteComfirm(id){
     let result = confirm("Bạn có muốn xóa không?")
     if (result){
-        deleteProduct(id);
+        deleteFood(id);
     }
 }
-function deleteProduct(id){
+function deleteFood(id){
     $.ajax({
         type: "DELETE",
         url: "http://localhost:8080/api/food/"+ id,
@@ -185,7 +185,7 @@ function showEditForm(id){
 
 
 
-function updateProduct(){
+function updateFood(){
     let form = new FormData();
     let name = $('#name1').val();
     let price = $('#price1').val();

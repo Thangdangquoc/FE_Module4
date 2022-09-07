@@ -1,5 +1,6 @@
 let table = document.getElementById("listFood");
 let seachName = document.getElementById("search_name");
+let seachCategory = document.getElementById("category3");
 getAllFood();
 listCategory1();
 
@@ -13,58 +14,6 @@ function getAllFood(){
         }
     })
 }
-// function displayTable(data){
-//     let result = ""
-//     for (let i = 0; i < data.length; i++) {
-//         result +="<tr>"
-//         result+="<td>"+ i+1 +"</td>"
-//         result+="<td>"+ data[i].name +"</td>"
-//         result+="<td>"+ data[i].price +"</td>"
-//         result+="<td>"+ data[i].description +"</td>"
-//         result+="<td>"+ data[i].category.name +"</td>"
-//         result += " <th>"+ '<img  src="'+"http://localhost:8080/Image/" + data[i].imageUrl  +'"  width="100" height="100">' + "</th>"
-//         // result += " <th>"+ '<img  src="'+" D:\\Clone Gif\\Clone Gif module4\\ogani-master\\img\\breadcrumb.jpg" +'"  width="100" height="100">' + "</th>"
-//
-//         result+="<td><button onclick='showEditForm("+data[i].id+")'>Update</button></td>"
-//         result+="<td><button onclick='deleteComfirm("+data[i].id+")'>Delete</button></td>"
-//         result+="</tr>"
-//
-//
-//
-//         // result +='<div class="col-lg-3 col-md-4 col-sm-6 mix vegetables fastfood">\n' +
-//         //     '                    <div class="featured__item">\n' +
-//         //     '                        <div class="featured__item__pic set-bg" data-setbg="img/featured/feature-2.jpg">\n' +
-//         //     '                            <ul class="featured__item__pic__hover">\n' +
-//         //     '                                <li><a href="#"><i class="fa fa-heart"></i></a></li>' +
-//         //     '                                <li><a href="#"><i class="fa fa-retweet"></i></a></li>' +
-//         //     '                                <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>' +
-//         //     '                            </ul>\n' +
-//         //     '                        </div>\n' +
-//         //     '                        <div class="featured__item__text">' +
-//         //     '                            <h6><a href="#">'+data[i].name+'</a></h6>' +
-//         //     '                            <h5>'+ data[i].price +'</h5>   ' +
-//         //     '                        </div>\n' +
-//         //     '                    </div>\n' +
-//         //     '                </div>'
-//
-//
-//
-// // // result +="<div class=\"featured__item__pic set-bg\" data-setbg=\"img/featured/feature-2.jpg\">\n"
-// // result +='<img  src="'+" ../static/image/" + data[i].imageUrl +'"  width="100" height="100">'
-// // // result +=   "                            <ul class=\"featured__item__pic__hover\">\n"
-// // // result +=  "                                <li><a href=\"#\"><i class=\"fa fa-heart\"></i></a></li>\n"
-// // // result += "                                <li><a href=\"#\"><i class=\"fa fa-retweet\"></i></a></li>\n"
-// // // result +=   "                                <li><a href=\"#\"><i class=\"fa fa-shopping-cart\"></i></a></li>\n"
-// // result +=   "                            </ul>\n"
-// // result +=   "                        </div>\n"
-// // result +=  "                        <div class=\"featured__item__text\">\n"
-// // result +=    "                            <h6><a onclick='showEditForm("+data[i].id+")'>"+data[i].name+"</a></h6>\n"
-// // result +=    "                            <h5>"+ data[i].price +"</h5>\n"
-// // result +=    "                        </div>"
-//     }
-//     table.innerHTML = result;
-//
-// }
 function displayTable(data){
     let result = ""
     for (let i = 0; i < data.length; i++) {
@@ -79,11 +28,11 @@ function displayTable(data){
             "                                <div class=\"text-center p-4\">\n" +
             "                                    <a class=\"d-block h5 mb-2\" href=\"\">"+data[i].name+"</a>\n" +
             "                                    <span class=\"text-primary me-1\">"+ data[i].price +"VNĐ"+"</span>\n" +
-            "                                    <span class=\"text-body text-decoration-line-through\">$29.00</span>\n" +
+            "                                    <span class=\"text-body text-decoration-line-through\">100.000VNĐ</span>\n" +
             "                                </div>\n" +
             "                                <div class=\"d-flex border-top\">\n" +
             "                                    <small class=\"w-50 text-center border-end py-2\">\n" +
-            "                                        <a class=\"text-body\" href=\"\"><i class=\"fa fa-eye text-primary me-2\"></i>View detail</a>\n" +
+            "                                        <a class=\"text-body\" onclick='showEditForm("+data[i].id+")'><i class=\"fa fa-eye text-primary me-2\"></i>View detail</a>\n" +
             "                                    </small>\n" +
             "                                    <small class=\"w-50 text-center py-2\">\n" +
             "                                        <a class=\"text-body\" href=\"\"><i class=\"fa fa-shopping-bag text-primary me-2\"></i>Add to cart</a>\n" +
@@ -96,7 +45,7 @@ function displayTable(data){
     table.innerHTML = result;
 
 }
-function showCreate(){
+function showCart(){
     $('#exampleModal').modal('show');
     listCategory()
     listUser()
@@ -168,11 +117,6 @@ function listCategory1(){
                     "                        <a class=\"btn btn-outline-primary border-2 active\" data-bs-toggle=\"pill\"\n" +
                     "                           href=\"#tab-1\" value="+listCategory[i].id +">"+ listCategory[i].name +"</a>\n" +
                     "                    </li>"
-
-
-
-                // result += "<a class=\"btn btn-outline-primary border-2 active\" data-bs-toggle=\"pill\"\n" +
-                //     " href=\"#tab-1\" value="+listCategory[i].id +">"+ listCategory[i].name +"</a>"
             }
             document.getElementById("category3").innerHTML = result;
         }
@@ -198,10 +142,10 @@ function listUser(){
 function deleteComfirm(id){
     let result = confirm("Bạn có muốn xóa không?")
     if (result){
-        deleteProduct(id);
+        deleteFood(id);
     }
 }
-function deleteProduct(id){
+function deleteFood(id){
     $.ajax({
         type: "DELETE",
         url: "http://localhost:8080/api/food/"+ id,
@@ -219,14 +163,14 @@ function showEditForm(id){
         type: "GET",
         url: "http://localhost:8080/api/food/" + id,
         success: function (data) {
-            listCategory()
-            listUser()
+            // listCategory()
+            // listUser()
             console.log(id)
             idProduct = data.id;
             document.getElementById("name1").value = data.name
             document.getElementById("price1").value = data.price
             document.getElementById("description1").value = data.description
-            document.getElementById("image1").value = data.image
+            document.getElementById("image1").src = "http://localhost:8080/Image/" + data.imageUrl
             document.getElementById("category1").value = data.category.name
             document.getElementById("user1").value = data.user.name
 
@@ -292,7 +236,7 @@ function search(){
 function searchCategory(){
     $.ajax({
         type:"GET",
-        url:"http://localhost:8080/api/food/search-category?name="+ seachName.value,
+        url:"http://localhost:8080/api/food/search-category?name="+ seachCategory.value,
         success :function (data) {
             console.log(data.totalPages)
             console.log(data)
